@@ -1,0 +1,23 @@
+repos:
+  - repo: local
+    hooks:
+      - id: python-unittest
+        name: python unittest
+        entry: python3 -m unittest discover -s tests
+        language: system
+        pass_filenames: false
+        files: ^(src|tests)/.*\.py$
+
+      - id: cargo-fmt
+        name: cargo fmt
+        entry: bash -c 'cd rust && cargo fmt --all --check'
+        language: system
+        pass_filenames: false
+        files: ^rust/.*\.rs$
+
+      - id: cargo-clippy
+        name: cargo clippy
+        entry: bash -c 'cd rust && cargo clippy --workspace --all-targets'
+        language: system
+        pass_filenames: false
+        files: ^rust/.*\.rs$
