@@ -7,6 +7,9 @@ on:
       - 'gaebal/**'
       - 'omx-issue-*'
     paths:
+      - AGENTS.md
+      - CLAUDE.md
+      - .pre-commit-config.yaml
       - .github/workflows/rust-ci.yml
       - .github/scripts/check_doc_source_of_truth.py
       - .github/FUNDING.yml
@@ -21,6 +24,9 @@ on:
     branches:
       - main
     paths:
+      - AGENTS.md
+      - CLAUDE.md
+      - .pre-commit-config.yaml
       - .github/workflows/rust-ci.yml
       - .github/scripts/check_doc_source_of_truth.py
       - .github/FUNDING.yml
@@ -83,7 +89,7 @@ jobs:
         with:
           workspaces: rust -> target
       - name: Run workspace tests
-        run: cargo test --workspace
+        run: cargo test --workspace -- --test-threads=1
 
   clippy-workspace:
     name: cargo clippy --workspace
@@ -97,4 +103,4 @@ jobs:
         with:
           workspaces: rust -> target
       - name: Run workspace clippy
-        run: cargo clippy --workspace
+        run: cargo clippy --workspace --all-targets
