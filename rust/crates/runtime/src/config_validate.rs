@@ -146,6 +146,10 @@ const TOP_LEVEL_FIELDS: &[FieldSpec] = &[
         expected: FieldType::String,
     },
     FieldSpec {
+        name: "description",
+        expected: FieldType::String,
+    },
+    FieldSpec {
         name: "model",
         expected: FieldType::String,
     },
@@ -557,6 +561,21 @@ mod tests {
             result.errors[0].kind,
             DiagnosticKind::UnknownKey { .. }
         ));
+    }
+
+    #[test]
+    fn accepts_description_metadata() {
+        // given
+        let source = r#"{"description": "local operator notes", "model": "opus"}"#;
+        let parsed = JsonValue::parse(source).expect("valid json");
+        let object = parsed.as_object().expect("object");
+
+        // when
+        let result = validate_config_file(object, source, &test_path());
+
+        // then
+        assert!(result.is_ok());
+        assert!(result.warnings.is_empty());
     }
 
     #[test]

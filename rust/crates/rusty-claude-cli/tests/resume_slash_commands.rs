@@ -236,9 +236,11 @@ fn resumed_status_command_emits_structured_json_when_requested() {
     session
         .save_to_path(&session_path)
         .expect("session should persist");
+    let config_home = temp_dir.join("home").join(".claw");
+    fs::create_dir_all(&config_home).expect("config home should exist");
 
     // when
-    let output = run_claw(
+    let output = run_claw_with_env(
         &temp_dir,
         &[
             "--output-format",
@@ -247,6 +249,7 @@ fn resumed_status_command_emits_structured_json_when_requested() {
             session_path.to_str().expect("utf8 path"),
             "/status",
         ],
+        &[("CLAW_CONFIG_HOME", config_home.to_str().expect("utf8 path"))],
     );
 
     // then
